@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SunForce Solar — ระบบโซลาร์เซลล์ครบวงจร</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#060D1F;
+  --navy2:#0B1630;
+  --navy3:#112048;
+  --gold:#F5A623;
+  --gold2:#FFD166;
+  --orange:#E8600A;
+  --white:#F0F5FF;
+  --muted:#7A90BC;
+  --dim:#3A4F78;
+  --surface:#0F1E3C;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Sarabun',sans-serif;
+  background:var(--navy);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── GRID PATTERN BG ─── */
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(245,166,35,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(245,166,35,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;width:100%;z-index:100;
+  background:rgba(6,13,31,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(245,166,35,.15);
+  padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  height:72px;
+}
+.logo{
+  font-family:'Kanit',sans-serif;
+  font-size:1.5rem;font-weight:700;
+  letter-spacing:.03em;
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;color:var(--white);
+}
+.logo-icon{
+  width:38px;height:38px;background:var(--gold);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:#060D1F;font-size:1.2rem;font-weight:900;
+}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  font-family:'Sarabun',sans-serif;font-size:.95rem;font-weight:500;
+  color:var(--muted);text-decoration:none;
+  transition:color .2s;
+  cursor:pointer;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{
+  background:var(--gold);color:#060D1F;
+  font-family:'Kanit',sans-serif;font-size:.9rem;font-weight:600;
+  padding:.55rem 1.4rem;border-radius:8px;border:none;
+  cursor:pointer;transition:all .2s;text-decoration:none;
+  letter-spacing:.03em;
+}
+.nav-cta:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* ─── PAGES ─── */
+.page{display:none;min-height:100vh;padding-top:72px;position:relative;z-index:1}
+.page.active{display:block}
+
+/* ═══════════════════════════════════════
+   PAGE 1 — HOME
+═══════════════════════════════════════ */
+.hero{
+  min-height:calc(100vh - 72px);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 10%;
+  position:relative;overflow:hidden;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);
+  border-radius:50px;padding:.4rem 1rem;
+  font-size:.85rem;font-weight:500;color:var(--gold);
+  margin-bottom:2rem;width:fit-content;
+}
+.pulse{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.hero h1{
+  font-family:'Kanit',sans-serif;font-size:5.5rem;font-weight:800;
+  line-height:1;letter-spacing:-.02em;
+  margin-bottom:1.5rem;max-width:900px;
+}
+.hero h1 .hi{color:var(--gold)}
+.hero-sub{
+  font-size:1.2rem;font-weight:400;color:var(--muted);
+  max-width:560px;line-height:1.8;margin-bottom:3rem;
+}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn-primary{
+  background:var(--gold);color:#060D1F;
+  font-family:'Kanit',sans-serif;font-size:1rem;font-weight:600;
+  padding:.8rem 2rem;border-radius:10px;border:none;
+  cursor:pointer;transition:all .25s;letter-spacing:.04em;
+}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(245,166,35,.3)}
+.btn-outline{
+  background:transparent;color:var(--white);
+  font-family:'Kanit',sans-serif;font-size:1rem;font-weight:500;
+  padding:.8rem 2rem;border-radius:10px;border:1px solid var(--dim);
+  cursor:pointer;transition:all .25s;letter-spacing:.03em;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.hero-visual{
+  position:absolute;right:-5%;top:50%;transform:translateY(-50%);
+  width:520px;height:520px;opacity:.18;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+}
+.solar-cell{
+  border-radius:4px;background:linear-gradient(135deg,var(--gold),var(--orange));
+  animation:glow 3s ease-in-out infinite alternate;
+}
+.solar-cell:nth-child(odd){animation-delay:.5s}
+.solar-cell:nth-child(3n){animation-delay:1s}
+@keyframes glow{from{opacity:.4}to{opacity:1}}
+
+/* STATS */
+.stats-bar{
+  background:var(--surface);
+  border-top:1px solid rgba(245,166,35,.12);
+  border-bottom:1px solid rgba(245,166,35,.12);
+  padding:2.5rem 10%;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
+  text-align:center;
+}
+.stat-item{}
+.stat-num{
+  font-family:'Kanit',sans-serif;font-size:2.8rem;font-weight:700;
+  color:var(--gold);line-height:1;margin-bottom:.3rem;
+}
+.stat-label{font-size:.9rem;color:var(--muted);font-weight:400}
+
+/* WHY US */
+.section{padding:6rem 10%}
+.section-tag{
+  font-family:'Kanit',sans-serif;font-size:.85rem;font-weight:600;
+  letter-spacing:.15em;color:var(--gold);text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.section-title{
+  font-family:'Kanit',sans-serif;font-size:3rem;font-weight:700;
+  line-height:1.15;margin-bottom:1rem;
+}
+.section-sub{color:var(--muted);font-size:1.05rem;line-height:1.8;max-width:560px}
+.why-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  margin-top:3.5rem;
+}
+.why-card{
+  background:var(--surface);border:1px solid rgba(245,166,35,.08);
+  border-radius:16px;padding:2rem;transition:all .3s;
+  cursor:default;
+}
+.why-card:hover{border-color:rgba(245,166,35,.35);transform:translateY(-4px)}
+.why-icon{
+  width:52px;height:52px;background:rgba(245,166,35,.12);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;margin-bottom:1.2rem;
+}
+.why-title{font-family:'Kanit',sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:.6rem}
+.why-desc{color:var(--muted);font-size:.95rem;line-height:1.7}
+
+/* MINI SERVICES */
+.services-preview{padding:0 10% 6rem}
+.services-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem}
+.svc-mini{
+  background:var(--navy2);border:1px solid var(--dim);
+  border-radius:14px;padding:1.5rem;transition:all .3s;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.svc-mini::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--orange));
+  transform:scaleX(0);transform-origin:left;transition:.3s;
+}
+.svc-mini:hover::before{transform:scaleX(1)}
+.svc-mini:hover{border-color:rgba(245,166,35,.4);transform:translateY(-3px)}
+.svc-num{
+  font-family:'Kanit',sans-serif;font-size:2.5rem;font-weight:800;
+  color:rgba(245,166,35,.2);line-height:1;margin-bottom:.8rem;
+}
+.svc-name{font-family:'Kanit',sans-serif;font-size:1.05rem;font-weight:600;margin-bottom:.5rem}
+.svc-short{color:var(--muted);font-size:.88rem;line-height:1.6}
+
+/* CTA BAND */
+.cta-band{
+  margin:0 10% 6rem;border-radius:20px;
+  background:linear-gradient(135deg,var(--navy3) 0%,#1A0F38 100%);
+  border:1px solid rgba(245,166,35,.2);
+  padding:4rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;
+}
+.cta-band h2{font-family:'Kanit',sans-serif;font-size:2.2rem;font-weight:700;max-width:480px;line-height:1.2}
+.cta-band h2 span{color:var(--gold)}
+
+/* ═══════════════════════════════════════
+   PAGE 2 — SERVICES
+═══════════════════════════════════════ */
+.page-hero{
+  padding:4rem 10% 3rem;
+  border-bottom:1px solid rgba(245,166,35,.1);
+}
+.page-hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem}
+.page-hero h1{
+  font-family:'Kanit',sans-serif;font-size:4rem;font-weight:800;line-height:1.05;
+}
+.page-hero p{color:var(--muted);font-size:1.05rem;line-height:1.8;max-width:420px;text-align:right}
+
+.service-cards{padding:4rem 10%}
+.service-card{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:var(--surface);border:1px solid rgba(245,166,35,.1);
+  border-radius:20px;margin-bottom:2rem;overflow:hidden;
+  transition:border-color .3s;
+}
+.service-card:hover{border-color:rgba(245,166,35,.3)}
+.service-card.reverse{direction:rtl}
+.service-card.reverse>*{direction:ltr}
+.sc-content{padding:3rem}
+.sc-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(245,166,35,.1);border-radius:6px;
+  padding:.3rem .8rem;font-size:.8rem;font-weight:600;color:var(--gold);
+  letter-spacing:.05em;margin-bottom:1.5rem;text-transform:uppercase;
+}
+.sc-title{font-family:'Kanit',sans-serif;font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.2}
+.sc-desc{color:var(--muted);line-height:1.8;margin-bottom:1.5rem;font-size:.95rem}
+.sc-list{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.sc-list li{
+  display:flex;align-items:flex-start;gap:.7rem;
+  font-size:.9rem;color:var(--muted);
+}
+.sc-list li::before{
+  content:'✦';color:var(--gold);font-size:.7rem;margin-top:.15rem;flex-shrink:0;
+}
+.sc-visual{
+  background:var(--navy3);display:flex;align-items:center;justify-content:center;
+  font-size:6rem;position:relative;overflow:hidden;min-height:280px;
+}
+.sc-visual-bg{
+  position:absolute;inset:0;opacity:.06;
+  background-image:radial-gradient(circle,var(--gold) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.sc-icon{position:relative;z-index:1;filter:drop-shadow(0 0 30px rgba(245,166,35,.4))}
+
+/* PRICING */
+.pricing-section{
+  padding:4rem 10%;background:var(--surface);
+  border-top:1px solid rgba(245,166,35,.1);border-bottom:1px solid rgba(245,166,35,.1);
+}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.price-card{
+  background:var(--navy2);border:1px solid var(--dim);
+  border-radius:16px;padding:2rem;position:relative;
+}
+.price-card.popular{
+  border-color:var(--gold);
+  background:linear-gradient(180deg,rgba(245,166,35,.07) 0%,var(--navy2) 100%);
+}
+.popular-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:#060D1F;
+  font-family:'Kanit',sans-serif;font-size:.8rem;font-weight:700;
+  padding:.3rem 1rem;border-radius:50px;white-space:nowrap;
+}
+.price-name{font-family:'Kanit',sans-serif;font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
+.price-tagline{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+.price-amount{
+  font-family:'Kanit',sans-serif;font-size:2rem;font-weight:700;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.price-amount span{font-size:1rem;font-weight:400;color:var(--muted)}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+.price-features li{font-size:.88rem;color:var(--muted);display:flex;gap:.5rem}
+.price-features li::before{content:'✓';color:var(--gold);font-weight:700}
+.btn-price{
+  width:100%;padding:.7rem;border-radius:8px;font-family:'Kanit',sans-serif;
+  font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-price.outline{background:transparent;border:1px solid var(--dim);color:var(--white)}
+.btn-price.outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-price.solid{background:var(--gold);color:#060D1F}
+.btn-price.solid:hover{background:var(--gold2)}
+
+/* ═══════════════════════════════════════
+   PAGE 3 — PORTFOLIO
+═══════════════════════════════════════ */
+.filter-bar{
+  padding:2rem 10%;display:flex;gap:.75rem;flex-wrap:wrap;
+  border-bottom:1px solid rgba(245,166,35,.1);
+}
+.filter-btn{
+  padding:.45rem 1.1rem;border-radius:50px;font-size:.88rem;font-weight:500;
+  background:transparent;border:1px solid var(--dim);color:var(--muted);
+  cursor:pointer;transition:all .2s;font-family:'Sarabun',sans-serif;
+}
+.filter-btn:hover,.filter-btn.active{
+  background:rgba(245,166,35,.12);border-color:var(--gold);color:var(--gold);
+}
+.projects-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  padding:3rem 10%;
+}
+.project-card{
+  background:var(--surface);border:1px solid rgba(245,166,35,.08);
+  border-radius:16px;overflow:hidden;transition:all .3s;cursor:pointer;
+}
+.project-card:hover{transform:translateY(-5px);border-color:rgba(245,166,35,.3);
+  box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.project-thumb{
+  height:200px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;font-size:4rem;
+}
+.project-info{padding:1.5rem}
+.project-type{
+  font-size:.78rem;font-weight:600;color:var(--gold);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;
+}
+.project-name{font-family:'Kanit',sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:.5rem}
+.project-loc{color:var(--muted);font-size:.88rem;margin-bottom:1rem}
+.project-metrics{display:flex;gap:1rem}
+.metric{
+  flex:1;background:rgba(245,166,35,.06);border-radius:8px;padding:.7rem;text-align:center;
+}
+.metric-val{font-family:'Kanit',sans-serif;font-size:1.1rem;font-weight:600;color:var(--gold)}
+.metric-key{font-size:.75rem;color:var(--muted)}
+
+/* PROCESS TIMELINE */
+.process-section{
+  padding:4rem 10%;background:var(--surface);
+  border-top:1px solid rgba(245,166,35,.1);
+}
+.timeline{display:flex;gap:0;margin-top:3rem;position:relative}
+.timeline::before{
+  content:'';position:absolute;top:28px;left:28px;right:28px;height:1px;
+  background:linear-gradient(90deg,var(--gold),var(--orange),var(--gold));opacity:.3;
+}
+.timeline-step{flex:1;position:relative;padding-top:4rem;text-align:center}
+.step-dot{
+  width:56px;height:56px;border-radius:50%;background:var(--navy2);
+  border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  margin:0 auto -3.5rem;position:absolute;top:0;left:50%;transform:translateX(-50%);
+  font-family:'Kanit',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);
+  z-index:1;
+}
+.step-title{font-family:'Kanit',sans-serif;font-size:1rem;font-weight:600;margin-bottom:.4rem}
+.step-desc{color:var(--muted);font-size:.82rem;line-height:1.6;padding:0 .5rem}
+
+/* TESTIMONIALS */
+.testimonials{padding:4rem 10%}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.testi-card{
+  background:var(--surface);border:1px solid rgba(245,166,35,.1);
+  border-radius:14px;padding:1.8rem;
+}
+.stars{color:var(--gold);font-size:1rem;margin-bottom:1rem;letter-spacing:2px}
+.testi-text{color:var(--muted);font-size:.92rem;line-height:1.75;margin-bottom:1.2rem;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.avatar{
+  width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Kanit',sans-serif;font-weight:700;font-size:.9rem;color:#060D1F;
+}
+.author-name{font-weight:600;font-size:.9rem}
+.author-role{color:var(--muted);font-size:.8rem}
+
+/* ═══════════════════════════════════════
+   PAGE 4 — CONTACT
+═══════════════════════════════════════ */
+.contact-layout{
+  display:grid;grid-template-columns:1fr 1.4fr;gap:0;
+  min-height:calc(100vh - 72px - 130px);
+}
+.contact-sidebar{
+  background:var(--surface);padding:4rem;
+  border-right:1px solid rgba(245,166,35,.1);
+}
+.contact-sidebar h2{
+  font-family:'Kanit',sans-serif;font-size:2.2rem;font-weight:700;
+  margin-bottom:.7rem;line-height:1.2;
+}
+.contact-sidebar p{color:var(--muted);line-height:1.8;margin-bottom:2.5rem}
+.info-items{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:3rem}
+.info-item{display:flex;gap:1rem;align-items:flex-start}
+.info-icon{
+  width:44px;height:44px;background:rgba(245,166,35,.12);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.info-label{font-size:.8rem;color:var(--muted);margin-bottom:.2rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.info-val{font-size:.95rem;font-weight:500}
+.social-row{display:flex;gap:.75rem}
+.social-btn{
+  width:40px;height:40px;border-radius:8px;background:rgba(245,166,35,.08);
+  border:1px solid rgba(245,166,35,.2);display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;cursor:pointer;transition:all .2s;
+  text-decoration:none;color:var(--white);
+}
+.social-btn:hover{background:rgba(245,166,35,.2);border-color:var(--gold)}
+.map-block{
+  margin-top:2rem;background:var(--navy3);border-radius:12px;padding:2rem;
+  border:1px solid rgba(245,166,35,.1);
+}
+.map-placeholder{
+  height:140px;background:var(--navy2);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.9rem;margin-top:.8rem;
+  border:1px dashed var(--dim);flex-direction:column;gap:.5rem;
+}
+.map-placeholder span{font-size:2rem}
+
+.contact-form-area{padding:4rem}
+.form-title{
+  font-family:'Kanit',sans-serif;font-size:1.6rem;font-weight:700;
+  margin-bottom:.4rem;
+}
+.form-sub{color:var(--muted);font-size:.92rem;margin-bottom:2.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.85rem;font-weight:600;color:var(--muted);letter-spacing:.03em}
+input,textarea,select{
+  background:var(--surface);border:1px solid var(--dim);border-radius:10px;
+  padding:.8rem 1rem;color:var(--white);font-family:'Sarabun',sans-serif;font-size:.95rem;
+  transition:border-color .2s;outline:none;width:100%;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+select option{background:var(--navy2)}
+textarea{resize:vertical;min-height:120px}
+.radio-group{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.3rem}
+.radio-label{
+  display:flex;align-items:center;gap:.5rem;cursor:pointer;
+  font-size:.9rem;color:var(--muted);
+}
+.radio-label input[type="radio"]{
+  width:auto;accent-color:var(--gold);cursor:pointer;
+}
+.submit-btn{
+  margin-top:2rem;width:100%;padding:1rem;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;border-radius:12px;
+  font-family:'Kanit',sans-serif;font-size:1.1rem;font-weight:700;
+  color:#060D1F;cursor:pointer;transition:all .25s;letter-spacing:.04em;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(245,166,35,.35)}
+.form-note{
+  margin-top:1rem;text-align:center;font-size:.82rem;color:var(--muted);
+}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--navy2);border-top:1px solid rgba(245,166,35,.12);
+  padding:3rem 10%;
+  display:flex;justify-content:space-between;align-items:center;gap:2rem;
+  flex-wrap:wrap;
+}
+.footer-logo{font-family:'Kanit',sans-serif;font-size:1.2rem;font-weight:700}
+.footer-logo span{color:var(--gold)}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{color:var(--muted);font-size:.88rem;text-decoration:none;cursor:pointer;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{color:var(--dim);font-size:.82rem;width:100%;text-align:center;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.04)}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.revealed{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" onclick="showPage('home')">
+    <div class="logo-icon">☀</div>
+    Sun<span>Force</span>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">หน้าแรก</a></li>
+    <li><a onclick="showPage('services')" id="nav-services">บริการ</a></li>
+    <li><a onclick="showPage('portfolio')" id="nav-portfolio">ผลงาน</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">ติดต่อ</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('contact')">ปรึกษาฟรี →</button>
+</nav>
+
+<!-- ═══════════ PAGE: HOME ═══════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-badge"><div class="pulse"></div>พลังงานสะอาด เพื่ออนาคตที่ยั่งยืน</div>
+    <h1>พลังงาน<br>จาก<span class="hi">แสงอาทิตย์</span><br>ครบวงจร</h1>
+    <p class="hero-sub">ให้คำปรึกษา สำรวจพื้นที่ ออกแบบระบบ และติดตั้ง Solar Cell อย่างมืออาชีพ ด้วยทีมวิศวกรผู้เชี่ยวชาญกว่า 10 ปี</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('contact')">รับคำปรึกษาฟรี →</button>
+      <button class="btn-outline" onclick="showPage('portfolio')">ดูผลงานของเรา</button>
+    </div>
+    <!-- Solar panel grid decoration -->
+    <div class="hero-visual">
+      <script>
+        document.currentScript.insertAdjacentHTML('afterend',
+          Array(25).fill('<div class="solar-cell"></div>').join(''));
+      </script>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">โครงการที่สำเร็จแล้ว</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15 MW</div>
+      <div class="stat-label">กำลังการผลิตรวม</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">10 ปี</div>
+      <div class="stat-label">ประสบการณ์ในวงการ</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">ความพึงพอใจลูกค้า</div>
+    </div>
+  </div>
+
+  <section class="section reveal">
+    <div class="section-tag">ทำไมต้องเลือกเรา</div>
+    <h2 class="section-title">เราไม่ใช่แค่ผู้ขาย<br>เราคือพาร์ทเนอร์ของคุณ</h2>
+    <p class="section-sub">ตั้งแต่วันแรกที่ปรึกษา จนถึงวันที่ระบบทำงาน และหลังจากนั้น เราดูแลคุณตลอด</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🔬</div>
+        <div class="why-title">วิเคราะห์แม่นยำ</div>
+        <div class="why-desc">ใช้ซอฟต์แวร์จำลองพลังงานขั้นสูง คำนวณ ROI และระยะเวลาคืนทุนให้แม่นยำก่อนตัดสินใจ</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🏗</div>
+        <div class="why-title">ทีมวิศวกรมืออาชีพ</div>
+        <div class="why-desc">วิศวกรไฟฟ้าที่ได้รับการรับรองจาก วสท. มีประสบการณ์ด้าน Solar โดยตรงมากกว่า 10 ปี</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🛡</div>
+        <div class="why-title">รับประกันยาว 25 ปี</div>
+        <div class="why-desc">แผงโซลาร์รับประกันประสิทธิภาพ 25 ปี อินเวอร์เตอร์ 10 ปี พร้อมบริการหลังการขายครบถ้วน</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <div class="why-title">ช่วยวางแผนการเงิน</div>
+        <div class="why-desc">ให้คำปรึกษาสินเชื่อธนาคาร แผนการผ่อนชำระ และแนะนำเรื่องการขายไฟฟ้าให้ EGAT</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📡</div>
+        <div class="why-title">ติดตามระบบ Online</div>
+        <div class="why-desc">แอปพลิเคชั่นดูผลผลิตพลังงานแบบ real-time ได้ตลอด 24 ชั่วโมง พร้อม alert แจ้งเตือน</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <div class="why-title">ติดตั้งรวดเร็ว</div>
+        <div class="why-desc">ทีมงานมืออาชีพ ติดตั้งเสร็จภายใน 1-3 วัน ไม่รบกวนชีวิตประจำวัน พร้อมทำความสะอาดพื้นที่</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-preview reveal">
+    <div class="section-tag">บริการของเรา</div>
+    <h2 class="section-title">ครบจบในที่เดียว</h2>
+    <div class="services-row">
+      <div class="svc-mini" onclick="showPage('services')">
+        <div class="svc-num">01</div>
+        <div class="svc-name">ให้คำปรึกษา</div>
+        <div class="svc-short">วิเคราะห์ความต้องการ คำนวณผลตอบแทน และวางแผนเบื้องต้นฟรี</div>
+      </div>
+      <div class="svc-mini" onclick="showPage('services')">
+        <div class="svc-num">02</div>
+        <div class="svc-name">สำรวจพื้นที่</div>
+        <div class="svc-short">ส่งทีมลงพื้นที่จริง ประเมินหลังคา โครงสร้าง และทิศทางรับแสง</div>
+      </div>
+      <div class="svc-mini" onclick="showPage('services')">
+        <div class="svc-num">03</div>
+        <div class="svc-name">ออกแบบระบบ</div>
+        <div class="svc-short">ออกแบบระบบที่เหมาะสมที่สุด พร้อมแบบ 3D และรายงานวิศวกรรม</div>
+      </div>
+      <div class="svc-mini" onclick="showPage('services')">
+        <div class="svc-num">04</div>
+        <div class="svc-name">ติดตั้งระบบ</div>
+        <div class="svc-short">ติดตั้งโดยช่างรับรอง พร้อมยื่นขอ PEA/MEA และทดสอบระบบ</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band reveal">
+    <h2>เริ่มต้นประหยัดค่าไฟ<br><span>ได้วันนี้เลย</span></h2>
+    <p style="color:var(--muted);max-width:320px;line-height:1.8;font-size:.95rem">ปรึกษาฟรี ไม่มีค่าใช้จ่าย ทีมงานพร้อมตอบทุกคำถามและเสนอแพ็กเกจที่ดีที่สุดสำหรับคุณ</p>
+    <button class="btn-primary" onclick="showPage('contact')" style="white-space:nowrap">รับคำปรึกษาฟรี →</button>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: SERVICES ═══════════ -->
+<div class="page" id="page-services">
+  <div class="page-hero">
+    <div class="page-hero-row">
+      <div>
+        <div class="section-tag">บริการของเรา</div>
+        <h1>Solar Cell<br>ครบทุกขั้นตอน</h1>
+      </div>
+      <p>ตั้งแต่ให้คำปรึกษา ไปจนถึงติดตั้งและดูแลระบบ เราดูแลคุณทุกขั้นตอนด้วยมาตรฐานสูงสุด</p>
+    </div>
+  </div>
+
+  <div class="service-cards">
+    <div class="service-card">
+      <div class="sc-content">
+        <div class="sc-badge">01 · คำปรึกษา</div>
+        <h3 class="sc-title">ให้คำปรึกษา<br>อย่างเชี่ยวชาญ</h3>
+        <p class="sc-desc">ทีมที่ปรึกษาของเราพร้อมวิเคราะห์ค่าไฟ พฤติกรรมการใช้พลังงาน และคำนวณผลตอบแทนการลงทุนให้คุณอย่างละเอียด ก่อนตัดสินใจซื้อ</p>
+        <ul class="sc-list">
+          <li>วิเคราะห์บิลค่าไฟย้อนหลัง 12 เดือน</li>
+          <li>คำนวณขนาดระบบที่เหมาะสม</li>
+          <li>ประมาณ ROI และระยะคืนทุน</li>
+          <li>แนะนำแหล่งเงินทุนและสินเชื่อ</li>
+          <li>ให้คำปรึกษาผ่านช่องทางที่สะดวก</li>
+        </ul>
+      </div>
+      <div class="sc-visual" style="background:linear-gradient(135deg,#0D1A3A,#1A2D58)">
+        <div class="sc-visual-bg"></div>
+        <div class="sc-icon">💡</div>
+      </div>
+    </div>
+
+    <div class="service-card reverse">
+      <div class="sc-content">
+        <div class="sc-badge">02 · สำรวจพื้นที่</div>
+        <h3 class="sc-title">สำรวจพื้นที่<br>โดยวิศวกร</h3>
+        <p class="sc-desc">ส่งทีมวิศวกรลงพื้นที่จริงเพื่อประเมินศักยภาพหลังคา โครงสร้างอาคาร ทิศทางรับแสง และสิ่งกีดขวาง เพื่อให้ได้ข้อมูลที่แม่นยำที่สุด</p>
+        <ul class="sc-list">
+          <li>ตรวจสอบโครงสร้างหลังคาและน้ำหนักรับได้</li>
+          <li>วิเคราะห์มุมและทิศทางรับแสงอาทิตย์</li>
+          <li>ตรวจสอบระบบไฟฟ้าและตู้เมนเบรกเกอร์</li>
+          <li>ถ่ายภาพและทำแผนที่ความร้อน (Thermal)</li>
+          <li>ประเมินพื้นที่ติดตั้งที่เหมาะสม</li>
+        </ul>
+      </div>
+      <div class="sc-visual" style="background:linear-gradient(135deg,#1A1000,#3A2800)">
+        <div class="sc-visual-bg"></div>
+        <div class="sc-icon">🏠</div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="sc-content">
+        <div class="sc-badge">03 · ออกแบบระบบ</div>
+        <h3 class="sc-title">ออกแบบระบบ<br>แม่นยำ ปลอดภัย</h3>
+        <p class="sc-desc">วิศวกรไฟฟ้าออกแบบระบบโซลาร์เซลล์ที่เหมาะกับพื้นที่และการใช้งานของคุณโดยเฉพาะ พร้อมเอกสารวิศวกรรมครบถ้วน</p>
+        <ul class="sc-list">
+          <li>ออกแบบ Layout และแบบ 3D จำลองระบบ</li>
+          <li>คำนวณและเลือกอุปกรณ์ที่เหมาะสม</li>
+          <li>จัดทำแบบไฟฟ้าที่ผ่านการรับรองวิศวกร</li>
+          <li>จัดทำรายการวัสดุ BOM ครบถ้วน</li>
+          <li>จำลองผลผลิตพลังงานรายปี (PVsyst)</li>
+        </ul>
+      </div>
+      <div class="sc-visual" style="background:linear-gradient(135deg,#001A10,#002D1A)">
+        <div class="sc-visual-bg"></div>
+        <div class="sc-icon">📐</div>
+      </div>
+    </div>
+
+    <div class="service-card reverse">
+      <div class="sc-content">
+        <div class="sc-badge">04 · ติดตั้งระบบ</div>
+        <h3 class="sc-title">ติดตั้งโดย<br>ช่างรับรองระดับชาติ</h3>
+        <p class="sc-desc">ทีมช่างติดตั้งที่ผ่านการรับรองจากการไฟฟ้า ดำเนินงานตามมาตรฐาน IEC และ วสท. ด้วยอุปกรณ์นิรภัยครบถ้วน</p>
+        <ul class="sc-list">
+          <li>ติดตั้งแผงโซลาร์และโครงสร้างรองรับ</li>
+          <li>เดินสายและติดตั้ง Inverter / ตู้ไฟ</li>
+          <li>ยื่นขออนุญาตและเชื่อมต่อ PEA/MEA</li>
+          <li>ทดสอบระบบและ Commissioning</li>
+          <li>อบรมการใช้งานและ App monitoring ให้เจ้าของ</li>
+        </ul>
+      </div>
+      <div class="sc-visual" style="background:linear-gradient(135deg,#1A0000,#2D0A00)">
+        <div class="sc-visual-bg"></div>
+        <div class="sc-icon">⚡</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="pricing-section reveal">
+    <div class="section-tag">แพ็กเกจบริการ</div>
+    <h2 class="section-title">เลือกแพ็กเกจ<br>ที่ใช่สำหรับคุณ</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Starter Home</div>
+        <div class="price-tagline">บ้านพักอาศัยทั่วไป</div>
+        <div class="price-amount">3 kWp <span>ขึ้นไป</span></div>
+        <ul class="price-features">
+          <li>แผงโซลาร์ Tier 1 Brand</li>
+          <li>Inverter รับประกัน 5 ปี</li>
+          <li>โครงสร้างอะลูมิเนียม</li>
+          <li>ยื่นขอ PEA/MEA</li>
+          <li>App monitoring</li>
+          <li>รับประกันงานติดตั้ง 2 ปี</li>
+        </ul>
+        <button class="btn-price outline" onclick="showPage('contact')">ขอใบเสนอราคา</button>
+      </div>
+      <div class="price-card popular">
+        <div class="popular-badge">⭐ แนะนำ</div>
+        <div class="price-name">Business Pro</div>
+        <div class="price-tagline">SME &amp; โรงงานขนาดเล็ก</div>
+        <div class="price-amount">10–50 kWp <span>ขนาด</span></div>
+        <ul class="price-features">
+          <li>แผงโซลาร์ Premium Grade A</li>
+          <li>Inverter 3 Phase รับประกัน 10 ปี</li>
+          <li>โครงสร้างพิเศษตามพื้นที่</li>
+          <li>แบบวิศวกรรมรับรอง</li>
+          <li>ยื่น PPA / Net Metering</li>
+          <li>Monitoring Dashboard</li>
+          <li>บำรุงรักษา 1 ปีฟรี</li>
+        </ul>
+        <button class="btn-price solid" onclick="showPage('contact')">ขอใบเสนอราคา</button>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Enterprise</div>
+        <div class="price-tagline">โรงงาน / นิคมอุตสาหกรรม</div>
+        <div class="price-amount">100+ kWp <span>ขนาด</span></div>
+        <ul class="price-features">
+          <li>ออกแบบเฉพาะโครงการ</li>
+          <li>EPC Turnkey Solution</li>
+          <li>Project Manager ประจำ</li>
+          <li>SCADA Monitoring System</li>
+          <li>ยื่น VSPP/SPP</li>
+          <li>บำรุงรักษา O&amp;M 5 ปี</li>
+          <li>ประกันภัยระบบพลังงาน</li>
+        </ul>
+        <button class="btn-price outline" onclick="showPage('contact')">ติดต่อทีมงาน</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ PAGE: PORTFOLIO ═══════════ -->
+<div class="page" id="page-portfolio">
+  <div class="page-hero">
+    <div class="page-hero-row">
+      <div>
+        <div class="section-tag">ผลงานของเรา</div>
+        <h1>กว่า 500 โครงการ<br>ทั่วประเทศ</h1>
+      </div>
+      <p>ผลงานหลากหลายประเภท ตั้งแต่บ้านพักอาศัยไปจนถึงโรงงานอุตสาหกรรม ด้วยกำลังการผลิตรวมกว่า 15 เมกะวัตต์</p>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterProjects(this,'all')">ทั้งหมด</button>
+    <button class="filter-btn" onclick="filterProjects(this,'residential')">บ้านพักอาศัย</button>
+    <button class="filter-btn" onclick="filterProjects(this,'commercial')">พาณิชย์</button>
+    <button class="filter-btn" onclick="filterProjects(this,'industrial')">อุตสาหกรรม</button>
+    <button class="filter-btn" onclick="filterProjects(this,'farm')">เกษตรกรรม</button>
+  </div>
+
+  <div class="projects-grid" id="projects-grid">
+    <!-- cards injected by JS -->
+  </div>
+
+  <section class="process-section reveal">
+    <div class="section-tag">ขั้นตอนการทำงาน</div>
+    <h2 class="section-title" style="margin-bottom:0">จาก 0 ถึงระบบทำงาน<br>ใน 4 ขั้นตอน</h2>
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="step-dot">1</div>
+        <div class="step-title">ปรึกษา &amp; ประเมิน</div>
+        <div class="step-desc">วิเคราะห์บิลค่าไฟ ประเมินพื้นที่ คำนวณผลตอบแทน</div>
+      </div>
+      <div class="timeline-step">
+        <div class="step-dot">2</div>
+        <div class="step-title">ออกแบบ &amp; เสนอราคา</div>
+        <div class="step-desc">จัดทำแบบ 3D รายการอุปกรณ์ และใบเสนอราคาละเอียด</div>
+      </div>
+      <div class="timeline-step">
+        <div class="step-dot">3</div>
+        <div class="step-title">ติดตั้ง &amp; ทดสอบ</div>
+        <div class="step-desc">ทีมช่างติดตั้ง ทดสอบระบบ และยื่นขออนุญาตการไฟฟ้า</div>
+      </div>
+      <div class="timeline-step">
+        <div class="step-dot">4</div>
+        <div class="step-title">เปิดใช้งาน &amp; ดูแล</div>
+        <div class="step-desc">เปิดระบบ อบรมการใช้งาน และบริการหลังการขายตลอดอายุ</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials reveal">
+    <div class="section-tag">รีวิวจากลูกค้า</div>
+    <h2 class="section-title">ลูกค้าพูดถึงเรา</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">"ทีมงานมืออาชีพมากครับ ตั้งแต่ให้คำปรึกษาจนติดตั้งเสร็จ ค่าไฟลดลง 70% ตั้งแต่เดือนแรก คุ้มค่ามาก"</p>
+        <div class="testi-author">
+          <div class="avatar">กว</div>
+          <div><div class="author-name">คุณกวิน สุทธิรัตน์</div><div class="author-role">บ้านพักอาศัย · กรุงเทพฯ</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">"โรงงานเราใช้ไฟเยอะมาก หลังติดตั้ง 100 kWp ประหยัดได้เดือนละกว่า 8 หมื่นบาท คืนทุนได้ใน 4 ปีครึ่ง"</p>
+        <div class="testi-author">
+          <div class="avatar">สม</div>
+          <div><div class="author-name">คุณสมชาย วงศ์ไพบูลย์</div><div class="author-role">โรงงานอาหาร · สมุทรสาคร</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">"ประทับใจมากค่ะ ทีมงานอธิบายครบ ขั้นตอนชัดเจน ติดตั้งสะอาดเรียบร้อย App ดูข้อมูลได้แบบ realtime"</p>
+        <div class="testi-author">
+          <div class="avatar">นิ</div>
+          <div><div class="author-name">คุณนิตยา เพชรสมุทร</div><div class="author-role">รีสอร์ท · เชียงใหม่</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ PAGE: CONTACT ═══════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-layout">
+    <div class="contact-sidebar">
+      <div class="section-tag">ติดต่อเรา</div>
+      <h2>พร้อมช่วยคุณ<br>ทุกคำถาม</h2>
+      <p>ทีมผู้เชี่ยวชาญพร้อมตอบทุกข้อสงสัยเกี่ยวกับระบบโซลาร์เซลล์ โดยไม่มีค่าใช้จ่าย</p>
+      <div class="info-items">
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div>
+            <div class="info-label">โทรศัพท์</div>
+            <div class="info-val">02-xxx-xxxx / 081-xxx-xxxx</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div>
+            <div class="info-label">อีเมล</div>
+            <div class="info-val">info@sunforce.co.th</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-label">ที่อยู่</div>
+            <div class="info-val">123 อาคารซันฟอร์ซ ถ.สุขุมวิท แขวงคลองตัน กรุงเทพฯ 10110</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div>
+            <div class="info-label">เวลาทำการ</div>
+            <div class="info-val">จ–ศ 8:00–18:00 น. / ส 9:00–15:00 น.</div>
+          </div>
+        </div>
+      </div>
+      <div class="social-row">
+        <a class="social-btn" title="LINE">💬</a>
+        <a class="social-btn" title="Facebook">📘</a>
+        <a class="social-btn" title="YouTube">▶</a>
+        <a class="social-btn" title="Instagram">📷</a>
+      </div>
+      <div class="map-block">
+        <div style="font-family:'Kanit',sans-serif;font-size:.9rem;font-weight:600;margin-bottom:.4rem">แผนที่สำนักงาน</div>
+        <div style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem">BTS อโศก ทางออก 1 · ระยะ 200 ม.</div>
+        <div class="map-placeholder">
+          <span>🗺</span>
+          <span>Google Maps</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-area">
+      <div class="form-title">ขอรับคำปรึกษาฟรี</div>
+      <div class="form-sub">กรอกข้อมูล เราจะติดต่อกลับภายใน 24 ชั่วโมง</div>
+      <div class="form-grid" id="contact-form">
+        <div class="form-group">
+          <label>ชื่อ-นามสกุล *</label>
+          <input type="text" placeholder="กรุณากรอกชื่อของคุณ">
+        </div>
+        <div class="form-group">
+          <label>เบอร์โทรศัพท์ *</label>
+          <input type="tel" placeholder="08x-xxx-xxxx">
+        </div>
+        <div class="form-group">
+          <label>อีเมล</label>
+          <input type="email" placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+          <label>จังหวัด *</label>
+          <select>
+            <option value="">-- เลือกจังหวัด --</option>
+            <option>กรุงเทพมหานคร</option>
+            <option>เชียงใหม่</option>
+            <option>ขอนแก่น</option>
+            <option>นครราชสีมา</option>
+            <option>ชลบุรี</option>
+            <option>สงขลา</option>
+            <option>ภูเก็ต</option>
+            <option>อื่นๆ</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>ประเภทสถานที่ *</label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="place" value="home" checked>🏠 บ้านพักอาศัย</label>
+            <label class="radio-label"><input type="radio" name="place" value="condo">🏢 คอนโด/อาคาร</label>
+            <label class="radio-label"><input type="radio" name="place" value="commercial">🏪 ร้านค้า/พาณิชย์</label>
+            <label class="radio-label"><input type="radio" name="place" value="factory">🏭 โรงงาน</label>
+            <label class="radio-label"><input type="radio" name="place" value="farm">🌾 เกษตรกรรม</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>ขนาดระบบที่สนใจ</label>
+          <select>
+            <option value="">-- ยังไม่แน่ใจ --</option>
+            <option>3–5 kWp (บ้านเล็ก)</option>
+            <option>6–10 kWp (บ้านใหญ่)</option>
+            <option>10–50 kWp (SME)</option>
+            <option>50–100 kWp (โรงงานเล็ก)</option>
+            <option>100 kWp ขึ้นไป</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>งบประมาณโดยประมาณ</label>
+          <select>
+            <option value="">-- เลือกช่วงงบ --</option>
+            <option>น้อยกว่า 100,000 บาท</option>
+            <option>100,000–300,000 บาท</option>
+            <option>300,000–500,000 บาท</option>
+            <option>500,000–1,000,000 บาท</option>
+            <option>มากกว่า 1,000,000 บาท</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>รายละเอียดเพิ่มเติม / คำถาม</label>
+          <textarea placeholder="เช่น ลักษณะหลังคา ค่าไฟต่อเดือน ความต้องการพิเศษ หรือคำถามที่อยากถาม..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>ช่องทางที่ต้องการให้ติดต่อกลับ</label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="channel" value="tel" checked>📞 โทรศัพท์</label>
+            <label class="radio-label"><input type="radio" name="channel" value="line">💬 LINE</label>
+            <label class="radio-label"><input type="radio" name="channel" value="email">📧 อีเมล</label>
+          </div>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitForm()">ส่งคำขอปรึกษาฟรี ☀</button>
+      <p class="form-note">🔒 ข้อมูลของคุณจะถูกเก็บเป็นความลับ ไม่มีการส่งต่อให้บุคคลภายนอก</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Sun<span>Force</span> Solar</div>
+  <div class="footer-links">
+    <a onclick="showPage('home')">หน้าแรก</a>
+    <a onclick="showPage('services')">บริการ</a>
+    <a onclick="showPage('portfolio')">ผลงาน</a>
+    <a onclick="showPage('contact')">ติดต่อ</a>
+  </div>
+  <div class="footer-copy">© 2025 SunForce Solar Co., Ltd. · ใบอนุญาตประกอบกิจการ เลขที่ 0105566XXXXX · ออกแบบและพัฒนาในประเทศไทย 🇹🇭</div>
+</footer>
+
+<script>
+// ─── PAGE NAVIGATION ───
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  triggerReveal();
+}
+
+// ─── PROJECTS DATA ───
+const projects=[
+  {type:'residential',emoji:'🏠',bg:'#0D1A2A',name:'บ้านพักอาศัย สาทร',loc:'กรุงเทพฯ',kw:'10 kWp',save:'3,200 ฿/เดือน',roi:'5 ปี'},
+  {type:'commercial',emoji:'🏪',bg:'#1A100A',name:'ร้านอาหาร MBK',loc:'กรุงเทพฯ',kw:'30 kWp',save:'12,000 ฿/เดือน',roi:'4.5 ปี'},
+  {type:'industrial',emoji:'🏭',bg:'#0A1A0A',name:'โรงงานอาหาร สมุทรสาคร',loc:'สมุทรสาคร',kw:'150 kWp',save:'85,000 ฿/เดือน',roi:'4 ปี'},
+  {type:'farm',emoji:'🌾',bg:'#1A1800',name:'ฟาร์มโซลาร์ ขอนแก่น',loc:'ขอนแก่น',kw:'500 kWp',save:'220,000 ฿/เดือน',roi:'6 ปี'},
+  {type:'residential',emoji:'🏡',bg:'#0D1A2A',name:'บ้านพักตากอากาศ เชียงใหม่',loc:'เชียงใหม่',kw:'8 kWp',save:'2,800 ฿/เดือน',roi:'5.5 ปี'},
+  {type:'commercial',emoji:'🏨',bg:'#1A100A',name:'โรงแรม Boutique ภูเก็ต',loc:'ภูเก็ต',kw:'80 kWp',save:'38,000 ฿/เดือน',roi:'4.2 ปี'},
+];
+
+function renderProjects(list){
+  const grid=document.getElementById('projects-grid');
+  grid.innerHTML=list.map(p=>`
+    <div class="project-card">
+      <div class="project-thumb" style="background:${p.bg};">
+        <span style="font-size:4rem;filter:drop-shadow(0 0 20px rgba(245,166,35,.4))">${p.emoji}</span>
+      </div>
+      <div class="project-info">
+        <div class="project-type">${{residential:'บ้านพักอาศัย',commercial:'พาณิชย์',industrial:'อุตสาหกรรม',farm:'เกษตรกรรม'}[p.type]}</div>
+        <div class="project-name">${p.name}</div>
+        <div class="project-loc">📍 ${p.loc}</div>
+        <div class="project-metrics">
+          <div class="metric"><div class="metric-val">${p.kw}</div><div class="metric-key">ขนาดระบบ</div></div>
+          <div class="metric"><div class="metric-val">${p.save}</div><div class="metric-key">ประหยัดได้</div></div>
+          <div class="metric"><div class="metric-val">${p.roi}</div><div class="metric-key">คืนทุนใน</div></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterProjects(btn,type){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects(type==='all'?projects:projects.filter(p=>p.type===type));
+}
+
+renderProjects(projects);
+
+// ─── SCROLL REVEAL ───
+function triggerReveal(){
+  setTimeout(()=>{
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const rect=el.getBoundingClientRect();
+      if(rect.top<window.innerHeight-60) el.classList.add('revealed');
+    });
+  },100);
+}
+window.addEventListener('scroll',triggerReveal);
+triggerReveal();
+
+// ─── FORM SUBMIT ───
+function submitForm(){
+  const btn=document.querySelector('.submit-btn');
+  btn.textContent='✅ ส่งสำเร็จแล้ว! ทีมงานจะติดต่อกลับเร็วๆ นี้';
+  btn.style.background='linear-gradient(135deg,#2ECC71,#27AE60)';
+  btn.style.color='#fff';
+  btn.disabled=true;
+}
+</script>
+</body>
+</html>
